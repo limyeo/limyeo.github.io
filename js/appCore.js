@@ -249,7 +249,7 @@ function isRecoverableRequestError(error) {
   if (navigator.onLine === false) return true;
 
   const status = getRequestErrorStatus(error);
-  if ([0, 404, 408, 409, 425, 429, 500, 502, 503, 504].includes(status)) return true;
+  if ([0, 408, 409, 425, 429, 500, 502, 503, 504].includes(status)) return true;
 
   const message = String(error?.message || error?.error_description || error || "").toLowerCase();
   return [
@@ -262,9 +262,7 @@ function isRecoverableRequestError(error) {
     "timed out",
     "gateway",
     "terminated",
-    "offline",
-    "status 404",
-    "404"
+    "offline"
   ].some((keyword) => message.includes(keyword));
 }
 
@@ -461,11 +459,16 @@ function notifyRecoverableRequestIssue(error, actionLabel = "서버 통신") {
 
   const status = getRequestErrorStatus(error);
   const fingerprint = `${actionLabel}::${status}::${String(error?.message || "")}`;
-  if (state.connectivity.lastFingerprint !== fingerprint) {
+  const isDuplicateVisibleNotice =
+    state.connectivity.noticeVisible && state.connectivity.lastFingerprint === fingerprint;
+
+  if (!isDuplicateVisibleNotice) {
     showGlobalError(getRecoverableRequestMessage(error, actionLabel));
     state.connectivity.lastFingerprint = fingerprint;
   }
 
+  if (isDuplicateVisibleNotice) return true;
+  
   showConnectivityNotice({
     title: navigator.onLine === false ? "오프라인 상태입니다." : "서버 통신이 잠시 불안정합니다.",
     message: getRecoverableRequestMessage(error, actionLabel),

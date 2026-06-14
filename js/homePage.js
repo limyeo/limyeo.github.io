@@ -39,13 +39,14 @@ function bindHomeActiveState() {
 
   const updateActive = () => {
     const rect = recentSection.getBoundingClientRect();
+    const headerRect = header.getBoundingClientRect();
     const visibleRatio = Math.min(Math.max((window.innerHeight - rect.top) / window.innerHeight, 0), 1);
     const isRecentActive = visibleRatio >= 0.45;
-    const isContrast = visibleRatio >= 0.9;
+    const shouldUseContrast = rect.top <= headerRect.bottom;
     const shouldHideIndicator = rect.top <= window.innerHeight * 0.72;
 
     setActive(isRecentActive ? "recent" : "home");
-    header.classList.toggle("site-header--contrast", isContrast);
+    header.classList.toggle("site-header--contrast", shouldUseContrast);
     scrollIndicator?.classList.toggle("is-hidden-by-scroll", shouldHideIndicator);
     notifyHomeRecentVisibilityChange?.(visibleRatio);
   };
