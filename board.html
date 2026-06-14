@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>선교 편지 게시판</title>
+  <!-- board.html -->
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/content.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/admin-ui.css" />
+  <link rel="stylesheet" href="css/board.css" />
+</head>
+<body data-page="board">
+  <header class="site-header">
+    <nav class="site-nav" aria-label="주요 메뉴">
+      <a class="site-nav__link" href="index.html">home</a>
+      <a class="site-nav__link" href="index.html#recent">recent</a>
+      <a class="site-nav__link is-active" href="board.html">board</a>
+
+      <button
+        type="button"
+        class="site-nav__link site-nav__link--icon"
+        data-admin-entry
+        aria-label="관리자 메뉴"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 12.5a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2.5c-4.2 0-7.5 2.35-7.5 5.25 0 .41.34.75.75.75h13.5a.75.75 0 0 0 .75-.75c0-2.9-3.3-5.25-7.5-5.25Z"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="sub-hero">
+      <div class="sub-hero__media">
+        <img
+          src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1800&q=80"
+          alt="게시판 비주얼"
+        />
+      </div>
+      <div class="sub-hero__overlay"></div>
+      <div class="sub-hero__content">
+        <p class="section-label section-label--light">mission board</p>
+        <h1 class="sub-hero__title">선교 편지</h1>
+      </div>
+    </section>
+
+    <section class="board-shell">
+      <div class="board-page">
+        <section class="board-page__content">
+          <div id="boardListView" class="board-view">
+            <div id="boardList" class="board-list"></div>
+            <div id="boardPagination" class="board-pagination"></div>
+          </div>
+
+          <section id="boardDetailView" class="board-view board-detail is-hidden" aria-live="polite">
+            <article class="recent-letter__article board-detail__article">
+              <header class="recent-letter__meta board-detail__meta">
+                <div class="board-detail__meta-main">
+                  <h2 id="boardDetailTitle" class="recent-letter__post-title"></h2>
+                  <p id="boardDetailDate" class="recent-letter__post-date"></p>
+                  <div class="recent-letter__music board-detail__music">
+                    <div id="boardDetailMusicPlayer" class="post-mini-player is-hidden" aria-label="게시글 음악 플레이어">
+
+                      <div id="boardDetailMusicEq" class="post-mini-player__eq" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                      <button
+                        id="boardDetailMusicPlayButton"
+                        type="button"
+                        class="post-mini-player__button"
+                        aria-label="재생"
+                        title="재생"
+                      ></button>
+
+                      <button
+                        id="boardDetailMusicMuteButton"
+                        type="button"
+                        class="post-mini-player__button"
+                        aria-label="음소거 해제"
+                        title="음소거 해제"
+                      ></button>
+
+                      <div id="boardDetailMusicEmbedHost" class="post-mini-player__embed-host" aria-hidden="true"></div>
+                    </div>
+                  </div>
+
+                </div>
+              </header>
+
+              <div id="boardDetailBody" class="recent-letter__blocks board-detail__body"></div>
+
+              <div class="board-detail__actions">
+                <button id="boardDetailEditButton" type="button" class="soft-button is-hidden">수정</button>
+                <button id="boardDetailDeleteButton" type="button" class="outline-button is-hidden">삭제</button>
+                <button id="boardDetailListButton" type="button" class="solid-button">목록</button>
+              </div>
+            </article>
+          </section>
+
+          <section id="boardEditorView" class="board-view board-editor is-hidden" aria-live="polite">
+            <article class="admin-card board-editor__card">
+              <div class="admin-card__head admin-card__head--split">
+                <div>
+                  <p class="section-label">editor</p>
+                  <h2 id="boardEditorHeading" class="admin-card__title">선교 편지 등록</h2>
+                </div>
+
+                <button id="boardEditorListButton" type="button" class="outline-button">목록</button>
+              </div>
+
+              <form id="postForm" class="admin-form">
+                <input type="hidden" id="postIdInput" />
+
+                <div class="admin-form__row">
+                  <label class="admin-field">
+                    <span class="admin-field__label">제목</span>
+                    <input id="postTitleInput" class="admin-input" type="text" placeholder="제목을 입력하세요" required />
+                  </label>
+
+                  <label class="admin-field">
+                    <span class="admin-field__label">배경음악 오디오 파일</span>
+                    <div class="board-editor__music-row">
+                      <input
+                        id="postMusicFileInput"
+                        class="admin-input"
+                        type="file"
+                        accept="audio/*"
+                      />
+                      <button id="postMusicRemoveButton" type="button" class="outline-button">파일 삭제</button>
+                    </div>
+                    <p id="postMusicFileName" class="admin-helper-text">
+                      배경음악이 없습니다.
+                    </p>
+                  </label>
+                </div>
+
+                <div class="admin-card__head admin-card__head--split admin-card__head--blocks">
+                  <div>
+                    <p class="section-label">content blocks</p>
+                    <h3 class="admin-card__subtitle">글과 사진을 순서대로 구성</h3>
+                    <p class="admin-helper-text">이미지는 외부 URL 또는 Supabase Storage 업로드 중 하나를 사용할 수 있습니다.</p>
+                  </div>
+
+                  <div class="admin-actions admin-actions--compact admin-actions--block-picker">
+                    <button id="addTextBlockButton" type="button" class="outline-button">text block</button>
+
+                    <div class="block-type-picker">
+                      <button id="addImageBlockButton" type="button" class="outline-button">image block</button>
+
+                      <div id="imageBlockTypeMenu" class="block-type-menu is-hidden" aria-hidden="true">
+                        <button id="addImageUrlBlockButton" type="button" class="block-type-menu__button">URL 등록</button>
+                        <button id="addImageFileBlockButton" type="button" class="block-type-menu__button">파일 업로드</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="blockList" class="block-list"></div>
+
+                <div class="board-editor__actions">
+                  <button type="submit" class="solid-button">저장</button>
+                  <button id="boardEditorCancelButton" type="button" class="outline-button">취소</button>
+                </div>
+              </form>
+            </article>
+          </section>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <button id="boardCreateButton" type="button" class="solid-button board-floating-create is-hidden">등록</button>
+
+  <script>
+    window.__SUPABASE_CONFIG__ = {
+      url: "https://zxwdculpycqvbcfdoxvu.supabase.co",
+      publishableKey: "sb_publishable_XlcGQYXgXwTBJ5U3qwZKSA_yFhONse1",
+      imageBucket: "image",
+      audioBucket: "audio"
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/appCore.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/backgroundMusic.js"></script>
+  <script src="js/dataService.js"></script>
+  <script src="js/postEditor.js"></script>
+  <script src="js/homePage.js"></script>
+  <script src="js/boardPage.js"></script>
+  <script src="js/adminPage.js"></script>
+</body>
+</html>

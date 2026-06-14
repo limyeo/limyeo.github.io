@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>관리자 페이지</title>
+  <!-- admin.html -->
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/admin-ui.css" />
+  <link rel="stylesheet" href="css/hero.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body data-page="admin">
+  <header class="site-header">
+    <nav class="site-nav" aria-label="주요 메뉴">
+      <a class="site-nav__link" href="index.html">home</a>
+      <a class="site-nav__link" href="index.html#recent">recent</a>
+      <a class="site-nav__link" href="board.html">board</a>
+      <button
+        type="button"
+        class="site-nav__link site-nav__link--icon is-active"
+        data-admin-entry
+        aria-label="관리자 메뉴"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 12.5a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2.5c-4.2 0-7.5 2.35-7.5 5.25 0 .41.34.75.75.75h13.5a.75.75 0 0 0 .75-.75c0-2.9-3.3-5.25-7.5-5.25Z"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="sub-hero sub-hero--admin">
+      <div class="sub-hero__media">
+        <img
+          src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=1800&q=80"
+          alt="관리자 비주얼"
+        />
+      </div>
+      <div class="sub-hero__overlay"></div>
+      <div class="sub-hero__content">
+        <p class="section-label section-label--light">site control</p>
+        <h1 class="sub-hero__title">관리자 페이지</h1>
+      </div>
+    </section>
+
+    <section class="admin-shell">
+      <div class="admin-page">
+        <section class="admin-dashboard">
+          <div id="adminSummaryGrid" class="admin-summary-grid"></div>
+
+          <div class="admin-grid">
+            <section class="admin-card">
+              <div class="admin-card__head admin-card__head--split">
+                <div>
+                  <p class="section-label">dashboard</p>
+                  <h2 class="admin-card__title">운영 현황</h2>
+                </div>
+                <span id="adminDashboardUpdatedAt" class="admin-dashboard__updated"></span>
+              </div>
+
+              <div id="adminOverview" class="admin-overview"></div>
+            </section>
+
+            <section class="admin-card">
+              <div class="admin-card__head">
+                <p class="section-label">quick actions</p>
+                <h2 class="admin-card__title">빠른 이동</h2>
+              </div>
+
+              <div class="admin-quick-actions">
+                <a class="soft-button admin-quick-actions__button" href="board.html">전체 게시판 이동</a>
+                <button id="adminCreatePostButton" type="button" class="solid-button admin-quick-actions__button">새 게시글 작성</button>
+              </div>
+
+              <div class="admin-card__subsection">
+                <div class="admin-card__subhead">
+                  <div>
+                    <p class="section-label">recent posts</p>
+                    <h3 class="admin-card__subtitle">최근 게시글</h3>
+                  </div>
+                </div>
+
+                <div id="adminRecentPosts" class="admin-post-list admin-post-list--compact"></div>
+              </div>
+            </section>
+
+            <section class="admin-card admin-card--wide">
+              <div class="admin-card__head">
+                <p class="section-label">hero image</p>
+                <h2 class="admin-card__title">첫 화면 이미지 / 로고 텍스트 관리</h2>
+                <p class="admin-helper-text">외부 URL을 넣거나 이미지를 업로드하면 Supabase Storage에 저장됩니다. 로고 텍스트는 저장 전에도 아래 미리보기에서 바로 확인할 수 있습니다.</p>
+              </div>
+
+              <form id="heroForm" class="admin-form">
+                <label class="admin-field">
+                  <span class="admin-field__label">이미지 URL</span>
+                  <input id="heroImageInput" class="admin-input" type="url" placeholder="https://..." />
+                </label>
+
+                <label class="admin-field">
+                  <span class="admin-field__label">또는 이미지 파일 업로드</span>
+                  <input id="heroImageFileInput" class="admin-input" type="file" accept="image/*" />
+                </label>
+
+                <label class="admin-field">
+                  <span class="admin-field__label">히어로 로고 텍스트</span>
+                  <textarea id="heroLogoTextInput" class="admin-textarea admin-textarea--hero" placeholder="첫 화면에 보여줄 문구를 입력하세요" wrap="off" spellcheck="false">복음을 전하고, 삶을 나누는 선교 편지</textarea>
+                  <p class="admin-helper-text">자동 줄바꿈 없이 입력한 한 줄이 그대로 유지됩니다. Enter로 줄바꿈하거나 Space로 들여쓴 만큼 미리보기와 실제 화면에 동일하게 반영됩니다.</p>
+                </label>
+
+                <div class="admin-form__row admin-form__row--hero-style">
+                  <label class="admin-field">
+                    <span class="admin-field__label">로고 텍스트 크기</span>
+                    <div class="hero-size-control">
+                      <input id="heroLogoSizeInput" class="hero-size-control__range" type="range" min="60" max="160" step="1" value="100" />
+                      <span id="heroLogoSizeValue" class="hero-size-control__value">100%</span>
+                    </div>
+                  </label>
+                </div>
+
+                <div class="admin-field">
+                  <span class="admin-field__label">로고 텍스트 위치</span>
+                  <input id="heroLogoPositionInput" type="hidden" value="center-center" />
+                  <div id="heroLogoPositionPicker" class="hero-position-picker" role="group" aria-label="로고 텍스트 위치 선택">
+                    <button type="button" class="hero-position-picker__button" data-hero-position-choice="top-left">왼쪽 상단</button>
+                    <button type="button" class="hero-position-picker__button" data-hero-position-choice="top-center">가운데 상단</button>
+                    <button type="button" class="hero-position-picker__button" data-hero-position-choice="top-right">오른쪽 상단</button>
+                    <button type="button" class="hero-position-picker__button" data-hero-position-choice="middle-left">왼쪽 중단</button>
+                    <button type="button" class="hero-position-picker__button is-active" data-hero-position-choice="center-center">가운데 중단</button>
+                    <button type="button" class="hero-position-picker__button" data-hero-position-choice="middle-right">오른쪽 중단</button>
+                    <button type="button" class="hero-position-picker__button" data-hero-position-choice="bottom-left">왼쪽 하단</button>
+                    <button type="button" class="hero-position-picker__button" data-hero-position-choice="bottom-center">가운데 하단</button>
+                    <button type="button" class="hero-position-picker__button" data-hero-position-choice="bottom-right">오른쪽 하단</button>
+                  </div>
+                </div>
+
+                <p id="heroStorageInfo" class="admin-helper-text"></p>
+
+                <div class="admin-actions">
+                  <button type="submit" class="solid-button">save hero</button>
+                </div>
+              </form>
+
+              <div class="admin-preview hero-preview-card">
+                <div class="hero-preview-card__media">
+                  <img id="heroPreview" src="" alt="첫 화면 미리보기" />
+                </div>
+                <div class="hero-preview-card__overlay" aria-hidden="true"></div>
+                <div id="heroPreviewContent" class="hero-preview-card__content is-hero-pos-center-center" data-hero-position="center-center">
+                  <p class="hero-preview-card__eyebrow">mission letter</p>
+                  <p id="heroLogoPreviewText" class="hero-preview-card__text">복음을 전하고, 삶을 나누는 선교 편지</p>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    window.__SUPABASE_CONFIG__ = {
+      url: "https://zxwdculpycqvbcfdoxvu.supabase.co",
+      publishableKey: "sb_publishable_XlcGQYXgXwTBJ5U3qwZKSA_yFhONse1",
+      imageBucket: "image",
+      audioBucket: "audio"
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/appCore.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/backgroundMusic.js"></script>
+  <script src="js/dataService.js"></script>
+  <script src="js/postEditor.js"></script>
+  <script src="js/homePage.js"></script>
+  <script src="js/boardPage.js"></script>
+  <script src="js/adminPage.js"></script>
+</body>
+</html>

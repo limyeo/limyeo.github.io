@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>선교 웹페이지</title>
+  <!-- index.html -->
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/content.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/hero.css" />
+</head>
+<body data-page="home">
+  <header class="site-header">
+    <nav class="site-nav" aria-label="주요 메뉴">
+      <button type="button" class="site-nav__link is-active" data-scroll-target="home">home</button>
+      <button type="button" class="site-nav__link" data-scroll-target="recent">recent</button>
+      <a class="site-nav__link" href="board.html">board</a>
+
+      <button
+        type="button"
+        class="site-nav__link site-nav__link--icon"
+        data-admin-entry
+        aria-label="관리자 메뉴"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 12.5a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2.5c-4.2 0-7.5 2.35-7.5 5.25 0 .41.34.75.75.75h13.5a.75.75 0 0 0 .75-.75c0-2.9-3.3-5.25-7.5-5.25Z"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    </nav>
+  </header>
+
+  <main class="home-page">
+    <section id="home" class="hero-section" aria-label="메인 비주얼">
+      <div class="hero-section__media">
+        <img
+          id="heroImage"
+          class="hero-section__image"
+          src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=1800&q=80"
+          alt="메인 비주얼"
+        />
+      </div>
+      <div class="hero-section__overlay" aria-hidden="true"></div>
+
+      <div class="hero-section__content is-hero-pos-center-center">
+        <p class="hero-section__eyebrow">mission letter</p>
+        <h1 id="heroLogoText" class="hero-section__logo-text">복음을 전하고, 삶을 나누는 선교 편지</h1>
+      </div>
+
+      <button
+        type="button"
+        class="scroll-indicator"
+        data-scroll-target="recent"
+        aria-label="아래로 스크롤"
+      >
+        <svg class="scroll-indicator__icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 6v12m0 0-5-5m5 5 5-5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+        ...
+      </button>
+    </section>
+
+    <section id="recent" class="recent-section">
+      <div class="recent-section__inner">
+        <article id="recentLetter" class="recent-letter"></article>
+
+        <div class="recent-section__footer">
+          <a class="text-link" href="board.html">전체 게시판 보러가기</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    window.__SUPABASE_CONFIG__ = {
+      url: "https://zxwdculpycqvbcfdoxvu.supabase.co",
+      publishableKey: "sb_publishable_XlcGQYXgXwTBJ5U3qwZKSA_yFhONse1",
+      imageBucket: "image",
+      audioBucket: "audio"
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/appCore.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/backgroundMusic.js"></script>
+  <script src="js/dataService.js"></script>
+  <script src="js/postEditor.js"></script>
+  <script src="js/homePage.js"></script>
+  <script src="js/boardPage.js"></script>
+  <script src="js/adminPage.js"></script>
+</body>
+</html>
