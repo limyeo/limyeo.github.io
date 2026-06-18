@@ -100,10 +100,12 @@
 
               <div id="boardDetailBody" class="recent-letter__blocks board-detail__body"></div>
 
-              <div class="board-detail__actions">
-                <button id="boardDetailEditButton" type="button" class="soft-button is-hidden">수정</button>
-                <button id="boardDetailDeleteButton" type="button" class="outline-button is-hidden">삭제</button>
+              <div class="board-detail__actions board-floating-actions board-floating-actions--right">
                 <button id="boardDetailListButton" type="button" class="solid-button">목록</button>
+                <button id="boardDetailEditButton" type="button" class="soft-button is-hidden">수정</button>
+              </div>
+              <div class="board-floating-actions board-floating-actions--left">
+                <button id="boardDetailDeleteButton" type="button" class="outline-button is-hidden">삭제</button>
               </div>
             </article>
           </section>
@@ -116,7 +118,6 @@
                   <h2 id="boardEditorHeading" class="admin-card__title">선교 편지 등록</h2>
                 </div>
 
-                <button id="boardEditorListButton" type="button" class="outline-button">목록</button>
               </div>
 
               <form id="postForm" class="admin-form">
@@ -139,28 +140,35 @@
                       />
                       <button id="postMusicRemoveButton" type="button" class="outline-button">파일 삭제</button>
                     </div>
-                    <p id="postMusicFileName" class="admin-helper-text">
-                      배경음악이 없습니다.
-                    </p>
+                    <p id="postMusicFileName" class="admin-helper-text" aria-live="polite"></p>
                   </label>
                 </div>
 
                 <div class="admin-card__head admin-card__head--split admin-card__head--blocks">
                   <div>
-                    <p class="section-label">content blocks</p>
+                    <p class="section-label">내용</p>
                     <h3 class="admin-card__subtitle">글과 사진을 순서대로 구성</h3>
                     <p class="admin-helper-text">이미지는 외부 URL 또는 Supabase Storage 업로드 중 하나를 사용할 수 있습니다.</p>
                   </div>
 
                   <div class="admin-actions admin-actions--compact admin-actions--block-picker">
-                    <button id="addTextBlockButton" type="button" class="outline-button">text block</button>
+                    <button id="addTextBlockButton" type="button" class="outline-button icon-button block-add-button" aria-label="글 블록 추가" title="글 블록 추가">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5 19h14M7 16l1.1-4.4L16.7 3a2 2 0 0 1 2.8 2.8l-8.6 8.6L7 16Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </button>
 
                     <div class="block-type-picker">
-                      <button id="addImageBlockButton" type="button" class="outline-button">image block</button>
+                      <button id="addImageBlockButton" type="button" class="outline-button icon-button block-add-button" aria-label="이미지 블록 추가" title="이미지 블록 추가">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M4.5 6.5A2.5 2.5 0 0 1 7 4h10a2.5 2.5 0 0 1 2.5 2.5v11A2.5 2.5 0 0 1 17 20H7a2.5 2.5 0 0 1-2.5-2.5v-11Z" fill="none" stroke="currentColor" stroke-width="1.7" />
+                          <path d="m5 16 4.2-4.2a1.4 1.4 0 0 1 2 0l2 2 1.2-1.2a1.4 1.4 0 0 1 2 0L19 15.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                          <circle cx="15.5" cy="8.5" r="1.2" fill="currentColor" />
+                        </svg>
+                      </button>
 
                       <div id="imageBlockTypeMenu" class="block-type-menu is-hidden" aria-hidden="true">
                         <button id="addImageUrlBlockButton" type="button" class="block-type-menu__button">URL 등록</button>
-                        <button id="addImageFileBlockButton" type="button" class="block-type-menu__button">파일 업로드</button>
                       </div>
                     </div>
                   </div>
@@ -168,9 +176,9 @@
 
                 <div id="blockList" class="block-list"></div>
 
-                <div class="board-editor__actions">
-                  <button type="submit" class="solid-button">저장</button>
+                <div class="board-editor__actions board-floating-actions board-floating-actions--right">
                   <button id="boardEditorCancelButton" type="button" class="outline-button">취소</button>
+                  <button type="submit" class="solid-button">저장</button>
                 </div>
               </form>
             </article>

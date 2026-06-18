@@ -22,7 +22,7 @@ function resetPostMusicFormState() {
   }
 
   if (fileName) {
-    fileName.textContent = "배경음악이 없습니다.";
+    fileName.textContent = "";
   }
 }
 
@@ -55,7 +55,7 @@ function updatePostMusicFieldStatus() {
     return;
   }
 
-  fileName.textContent = "배경음악이 없습니다.";
+  fileName.textContent = "";
 }
 
 function bindPostMusicFieldEvents() {
@@ -136,6 +136,20 @@ function loadPostToForm(letter) {
   if ((letter.blocks || []).length === 0) addBlock("text");
 }
 
+function getBlockActionIcon(action) {
+  const icons = {
+    up: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l-6 6m6-6 6 6m-6-6v14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>`,
+    down: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19l-6-6m6 6 6-6m-6 6V5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>`,
+    remove: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14m-9 4v6m4-6v6M9 7l.7-2h4.6l.7 2m-8 0 .8 13h8.4L17 7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>`
+  };
+  return icons[action] || "";
+}
+
+function renderBlockActionButton(action, variant = "soft-button") {
+  const labels = { up: "위로 이동", down: "아래로 이동", remove: "삭제" };
+  return `<button type="button" class="${variant} icon-button block-action-button" data-block-action="${action}" aria-label="${labels[action]}" title="${labels[action]}">${getBlockActionIcon(action)}</button>`;
+}
+
 function addBlock(type = "text", value = "", storagePath = "", imageSource = "url") {
   const blockList = document.getElementById("blockList");
   if (!blockList) return;
@@ -150,11 +164,11 @@ function addBlock(type = "text", value = "", storagePath = "", imageSource = "ur
   if (type === "text") {
     blockElement.innerHTML = `
       <div class="block-item__head">
-        <h4 class="block-item__title">text block</h4>
+        <h4 class="block-item__title">글</h4>
         <div class="block-item__actions">
-          <button type="button" class="soft-button" data-block-action="up">up</button>
-          <button type="button" class="soft-button" data-block-action="down">down</button>
-          <button type="button" class="outline-button" data-block-action="remove">remove</button>
+          ${renderBlockActionButton("up")}
+          ${renderBlockActionButton("down")}
+          ${renderBlockActionButton("remove", "outline-button")}
         </div>
       </div>
       <textarea class="admin-textarea" placeholder="본문 내용을 입력하세요">${escapeHtmlForTextarea(value)}</textarea>
@@ -168,11 +182,11 @@ function addBlock(type = "text", value = "", storagePath = "", imageSource = "ur
 
     blockElement.innerHTML = `
       <div class="block-item__head">
-        <h4 class="block-item__title">image block</h4>
+        <h4 class="block-item__title">이미지</h4>
         <div class="block-item__actions">
-          <button type="button" class="soft-button" data-block-action="up">up</button>
-          <button type="button" class="soft-button" data-block-action="down">down</button>
-          <button type="button" class="outline-button" data-block-action="remove">remove</button>
+          ${renderBlockActionButton("up")}
+          ${renderBlockActionButton("down")}
+          ${renderBlockActionButton("remove", "outline-button")}
         </div>
       </div>
 
@@ -183,9 +197,8 @@ function addBlock(type = "text", value = "", storagePath = "", imageSource = "ur
       ${
         isFileBlock
           ? `
-            <input class="admin-input block-file-input" type="file" accept="image/*" />
-            <p class="block-item__hint">선택한 파일은 저장 시 Supabase Storage에 업로드됩니다. 수정 화면에서는 새 파일을 고르지 않으면 기존 이미지를 유지합니다.</p>
-            <p class="block-item__file-name">${currentFileName ? `현재 저장된 파일: ${escapeHtml(currentFileName)}` : "선택된 파일이 없습니다."}</p>
+            <p class="block-item__hint">저장된 이미지 파일을 유지합니다.</p>
+            <p class="block-item__file-name">${currentFileName ? `현재 저장된 파일: ${escapeHtml(currentFileName)}` : "저장된 파일 정보가 없습니다."}</p>
           `
           : `
             <input class="admin-input block-image-input" type="url" placeholder="https://..." value="${escapeHtmlForAttribute(value)}" />
@@ -290,10 +303,10 @@ function handleBlockListClick(event) {
 }
 
 function updateBlockLabels() {
-  document.querySelectorAll(".block-item").forEach((block, index) => {
+  document.querySelectorAll(".block-item").forEach((block) => {
     const title = block.querySelector(".block-item__title");
     if (!title) return;
-    title.textContent = `${block.dataset.blockType || "block"} block ${index + 1}`;
+    title.textContent = block.dataset.blockType === "image" ? "이미지" : "글";
   });
 }
 

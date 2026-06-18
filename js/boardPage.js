@@ -15,10 +15,6 @@ function bindBoardEvents() {
     addBlock("image", "", "", "url");
     closeImageBlockTypeMenu();
   });
-  document.getElementById("addImageFileBlockButton")?.addEventListener("click", () => {
-    addBlock("image", "", "", "file");
-    closeImageBlockTypeMenu();
-  });
   document.getElementById("blockList")?.addEventListener("click", handleBlockListClick);
 
   document.addEventListener("click", handleImageBlockMenuOutsideClick);
@@ -193,7 +189,7 @@ function renderBoardCard(letter) {
     <article class="board-card">
       ${renderBoardThumb(letter)}
       <h2 class="board-card__title">
-        <button type="button" class="board-card__title-link" data-letter-id="${letter.id}">${escapeHtml(letter.title)}</button>
+        <button type="button" class="board-card__title-link" data-letter-id="${letter.id}" data-title="${escapeHtmlForAttribute(letter.title)}">${escapeHtml(letter.title)}</button>
       </h2>
     </article>
   `;
