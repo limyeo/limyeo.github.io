@@ -114,8 +114,7 @@
             <article class="admin-card board-editor__card">
               <div class="admin-card__head admin-card__head--split">
                 <div>
-                  <p class="section-label">editor</p>
-                  <h2 id="boardEditorHeading" class="admin-card__title">선교 편지 등록</h2>
+                  <p class="section-label board-editor__label">editor</p>
                 </div>
 
               </div>
@@ -124,13 +123,13 @@
                 <input type="hidden" id="postIdInput" />
 
                 <div class="admin-form__row">
-                  <label class="admin-field">
+                  <div class="admin-field">
                     <span class="admin-field__label">제목</span>
                     <input id="postTitleInput" class="admin-input" type="text" placeholder="제목을 입력하세요" required />
-                  </label>
+                  </div>
 
-                  <label class="admin-field">
-                    <span class="admin-field__label">배경음악 오디오 파일</span>
+                  <div class="admin-field">
+                    <span class="admin-field__label">배경음악</span>
                     <div class="board-editor__music-row">
                       <input
                         id="postMusicFileInput"
@@ -141,14 +140,13 @@
                       <button id="postMusicRemoveButton" type="button" class="outline-button">파일 삭제</button>
                     </div>
                     <p id="postMusicFileName" class="admin-helper-text" aria-live="polite"></p>
-                  </label>
+                  </div>
                 </div>
 
                 <div class="admin-card__head admin-card__head--split admin-card__head--blocks">
                   <div>
-                    <p class="section-label">내용</p>
-                    <h3 class="admin-card__subtitle">글과 사진을 순서대로 구성</h3>
-                    <p class="admin-helper-text">이미지는 외부 URL 또는 Supabase Storage 업로드 중 하나를 사용할 수 있습니다.</p>
+                    <!-- <p class="section-label">내용</p> -->
+                    <!-- <h3 class="admin-card__subtitle">글과 사진을 순서대로 구성</h3> -->
                   </div>
 
                   <div class="admin-actions admin-actions--compact admin-actions--block-picker">
@@ -169,6 +167,7 @@
 
                       <div id="imageBlockTypeMenu" class="block-type-menu is-hidden" aria-hidden="true">
                         <button id="addImageUrlBlockButton" type="button" class="block-type-menu__button">URL 등록</button>
+                        <button id="addImageFileBlockButton" type="button" class="block-type-menu__button">파일 업로드</button>
                       </div>
                     </div>
                   </div>

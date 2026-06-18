@@ -15,6 +15,10 @@ function bindBoardEvents() {
     addBlock("image", "", "", "url");
     closeImageBlockTypeMenu();
   });
+  document.getElementById("addImageFileBlockButton")?.addEventListener("click", () => {
+    addBlock("image", "", "", "file");
+    closeImageBlockTypeMenu();
+  });
   document.getElementById("blockList")?.addEventListener("click", handleBlockListClick);
 
   document.addEventListener("click", handleImageBlockMenuOutsideClick);

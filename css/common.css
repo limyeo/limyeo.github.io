@@ -274,7 +274,7 @@ input {
 
 .section-label {
   margin: 0 0 12px;
-  font-size: 12px;
+  font-size: 16px;
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--muted);

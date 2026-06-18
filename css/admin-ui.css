@@ -10,19 +10,11 @@
   grid-column: 1 / -1;
 }
 
-.admin-card__head {
-  margin-bottom: 22px;
-}
-
 .admin-card__head--split {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 18px;
-}
-
-.admin-card__head--blocks {
-  margin-top: 24px;
 }
 
 .admin-card__title {
@@ -59,7 +51,7 @@
 }
 
 .admin-field__label {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--muted);
 }
 
@@ -177,6 +169,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
+  margin-left: 5px;
 }
 
 .block-item__actions {

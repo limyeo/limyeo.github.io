@@ -145,7 +145,7 @@ function getBlockActionIcon(action) {
   return icons[action] || "";
 }
 
-function renderBlockActionButton(action, variant = "soft-button") {
+function renderBlockActionButton(action, variant = "outline-button") {
   const labels = { up: "위로 이동", down: "아래로 이동", remove: "삭제" };
   return `<button type="button" class="${variant} icon-button block-action-button" data-block-action="${action}" aria-label="${labels[action]}" title="${labels[action]}">${getBlockActionIcon(action)}</button>`;
 }
@@ -197,12 +197,11 @@ function addBlock(type = "text", value = "", storagePath = "", imageSource = "ur
       ${
         isFileBlock
           ? `
-            <p class="block-item__hint">저장된 이미지 파일을 유지합니다.</p>
-            <p class="block-item__file-name">${currentFileName ? `현재 저장된 파일: ${escapeHtml(currentFileName)}` : "저장된 파일 정보가 없습니다."}</p>
+            <input class="admin-input block-file-input" type="file" accept="image/*" />
+            <p class="block-item__file-name">${currentFileName ? `현재 저장된 파일: ${escapeHtml(currentFileName)}` : ""}</p>
           `
           : `
             <input class="admin-input block-image-input" type="url" placeholder="https://..." value="${escapeHtmlForAttribute(value)}" />
-            <p class="block-item__hint">외부 이미지 주소를 그대로 사용합니다.</p>
           `
       }
 
@@ -222,7 +221,7 @@ function addBlock(type = "text", value = "", storagePath = "", imageSource = "ur
             ? `선택된 파일: ${file.name}`
             : currentFileName
               ? `현재 저장된 파일: ${currentFileName}`
-              : "선택된 파일이 없습니다.";
+              : "";
         }
 
         if (file) {

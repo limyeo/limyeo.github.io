@@ -177,6 +177,11 @@
   padding: 28px;
 }
 
+.board-editor__label {
+  font-size: 18px;
+  letter-spacing: 0.16em;
+}
+
 .board-editor__music-row {
   display: flex;
   align-items: center;
