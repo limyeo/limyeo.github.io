@@ -192,19 +192,11 @@ function renderBoardCard(letter) {
   return `
     <article class="board-card">
       ${renderBoardThumb(letter)}
-      <div class="board-card__content">
-        <p class="board-card__date">${formatDateTime(letter.createdAt)}</p>
-        <h2 class="board-card__title">
-          <button type="button" class="board-card__title-link" data-letter-id="${letter.id}">${escapeHtml(letter.title)}</button>
-        </h2>
-      </div>
+      <h2 class="board-card__title">
+        <button type="button" class="board-card__title-link" data-letter-id="${letter.id}">${escapeHtml(letter.title)}</button>
+      </h2>
     </article>
   `;
-}
-
-function getLetterPreviewText(letter) {
-  const textBlock = (letter.blocks || []).find((block) => block.type === "text");
-  return textBlock?.value || "";
 }
 
 function renderBoardThumb(letter) {

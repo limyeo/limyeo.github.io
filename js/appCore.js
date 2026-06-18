@@ -1,4 +1,4 @@
-const BOARD_PAGE_SIZE = 5;
+const BOARD_PAGE_SIZE = 6;
 const DEFAULT_HERO_IMAGE =
   "https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=1800&q=80";
 const DEFAULT_HERO_LOGO_TEXT = "복음을 전하고, 삶을 나누는 선교 편지";

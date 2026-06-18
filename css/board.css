@@ -9,7 +9,8 @@
 
 .board-list {
   display: grid;
-  gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px;
 }
 
 .board-pagination {
@@ -63,18 +64,22 @@
 
 .board-card {
   display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: 26px;
-  padding: 22px;
+  gap: 14px;
+  padding: 16px;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: #ffffff;
   box-shadow: var(--card-shadow);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
 .board-card:hover {
-  transform: translateY(-2px);
+  border-color: var(--line-strong);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
 }
 
 .board-card__thumb {
@@ -92,6 +97,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.board-card:hover .board-card__thumb img {
+  transform: scale(1.035);
 }
 
 .board-card__thumb--empty {
@@ -102,26 +112,11 @@
   color: var(--muted);
 }
 
-.board-card__date {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
-  letter-spacing: 0.04em;
-}
-
 .board-card__title {
-  margin: 10px 0 14px;
-  font-size: clamp(24px, 3vw, 34px);
-  line-height: 1.14;
-  letter-spacing: -0.04em;
-}
-
-.board-card__body {
   margin: 0;
-  color: #202020;
-  line-height: 1.9;
-  font-size: 16px;
-  white-space: pre-wrap;
+  font-size: clamp(18px, 2vw, 24px);
+  line-height: 1.28;
+  letter-spacing: -0.03em;
 }
 
 .board-card__title-link {
@@ -138,6 +133,7 @@
 
 .board-card__title-link:hover {
   text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .board-detail__article {
@@ -310,8 +306,8 @@
 }
 
 @media (max-width: 920px) {
-  .board-card {
-    grid-template-columns: 1fr;
+  .board-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .board-detail__article {
@@ -320,6 +316,10 @@
 }
 
 @media (max-width: 640px) {
+  .board-list {
+    grid-template-columns: 1fr;
+  }
+
   .board-detail__article {
     width: calc(100vw - 36px);
   }
