@@ -2,6 +2,11 @@
   position: relative;
   --scroll-indicator-bottom-factor: 0.62;
   --scroll-indicator-bottom-min-gap: 14px;
+  line-height: 1;
+}
+
+.home-page * {
+  line-height: 1;  
 }
 
 .hero-section {
@@ -423,7 +428,7 @@
       calc(10vw * var(--hero-logo-scale)),
       calc(50px * var(--hero-logo-scale))
     );
-    line-height: 1;
+    line-height: 1.4;
   }
 
   .hero-position-picker {
