@@ -690,11 +690,6 @@ async function handleHeroSave(event) {
     return;
   }
 
-  if (!hasMeaningfulText(logoText)) {
-    alert("히어로 로고 텍스트를 입력해주세요.");
-    return;
-  }
-
   try {
     const submitButton = document.querySelector("#heroForm .solid-button");
     if (submitButton) {

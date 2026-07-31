@@ -1,12 +1,8 @@
 /* =========================================================
    data load / save
 ========================================================= */
-function hasMeaningfulText(value) {
-  return /\S/.test(String(value || ""));
-}
-
 function resolveHeroLogoText(value) {
-  return hasMeaningfulText(value) ? String(value) : DEFAULT_HERO_LOGO_TEXT;
+  return value == null ? DEFAULT_HERO_LOGO_TEXT : String(value);
 }
 
 function resolveHeroLogoSize(value) {
