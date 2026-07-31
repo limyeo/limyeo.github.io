@@ -16,6 +16,15 @@
   height: 100%;
 }
 
+.hero-section__media {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section__image-backdrop {
+  display: none;
+}
+
 .hero-section__image {
   object-fit: cover;
   transform: scale(1.02);
@@ -387,11 +396,19 @@
 }
 
 @media (max-width: 640px) {
-  .hero-section__media {
-    background: #ffffff;
+  .hero-section__image-backdrop {
+    position: absolute;
+    inset: -24px;
+    display: block;
+    width: calc(100% + 48px);
+    height: calc(100% + 48px);
+    object-fit: cover;
+    filter: blur(24px) saturate(1.08);
+    transform: scale(1.06);
   }
 
   .hero-section__image {
+    position: relative;
     object-fit: contain;
     transform: none;
   }

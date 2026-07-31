@@ -589,7 +589,11 @@ function getCurrentHeroLogoPosition() {
 function applyHeroImage() {
   const heroImage = document.getElementById("heroImage");
   if (!heroImage) return;
-  heroImage.src = getCurrentHeroImage();
+  const imageUrl = getCurrentHeroImage();
+  const heroImageBackdrop = document.getElementById("heroImageBackdrop");
+
+  heroImage.src = imageUrl;
+  if (heroImageBackdrop) heroImageBackdrop.src = imageUrl;
 }
 
 function applyHeroPresentation({
