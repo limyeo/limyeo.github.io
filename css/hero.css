@@ -428,7 +428,7 @@
       calc(10vw * var(--hero-logo-scale)),
       calc(50px * var(--hero-logo-scale))
     );
-    line-height: 1.4;
+    line-height: 1;
   }
 
   .hero-position-picker {
