@@ -10,6 +10,9 @@ function bindAdminEvents() {
   const heroLogoTextInput = document.getElementById("heroLogoTextInput");
   const heroLogoSizeInput = document.getElementById("heroLogoSizeInput");
   const heroLogoPositionPicker = document.getElementById("heroLogoPositionPicker");
+  const boardHeroForm = document.getElementById("boardHeroForm");
+  const boardHeroImageInput = document.getElementById("boardHeroImageInput");
+  const boardHeroImageFileInput = document.getElementById("boardHeroImageFileInput");
 
   heroForm?.addEventListener("submit", handleHeroSave);
   createPostButton?.addEventListener("click", handleAdminCreatePost);
@@ -20,6 +23,9 @@ function bindAdminEvents() {
   heroImageFileInput?.addEventListener("change", updateHeroAdminPreviewFromControls);
   heroLogoSizeInput?.addEventListener("input", updateHeroAdminPreviewFromControls);
   heroLogoPositionPicker?.addEventListener("click", handleHeroPositionPickerClick);
+  boardHeroForm?.addEventListener("submit", handleBoardHeroSave);
+  boardHeroImageInput?.addEventListener("input", updateBoardHeroPreviewFromControls);
+  boardHeroImageFileInput?.addEventListener("change", updateBoardHeroPreviewFromControls);
 
   document.querySelectorAll("[data-admin-viewer-close]").forEach((button) => {
     button.addEventListener("click", closeAdminPostViewer);
@@ -28,6 +34,78 @@ function bindAdminEvents() {
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeAdminPostViewer();
   });
+}
+
+function renderBoardHeroAdmin() {
+  const imageInput = document.getElementById("boardHeroImageInput");
+  const storageInfo = document.getElementById("boardHeroStorageInfo");
+  if (!imageInput) return;
+
+  imageInput.value = getCurrentBoardHeroImage();
+  if (storageInfo) {
+    storageInfo.textContent = state.settings.boardHeroImageStoragePath
+      ? `storage path: ${state.settings.boardHeroImageStoragePath}`
+      : "";
+  }
+  updateBoardHeroPreview(getCurrentBoardHeroImage());
+}
+
+function updateBoardHeroPreview(imageUrl) {
+  const preview = document.getElementById("boardHeroPreview");
+  if (preview) preview.src = imageUrl || DEFAULT_BOARD_HERO_IMAGE;
+}
+
+function updateBoardHeroPreviewFromControls() {
+  const imageInput = document.getElementById("boardHeroImageInput");
+  const file = document.getElementById("boardHeroImageFileInput")?.files?.[0] || null;
+  updateBoardHeroPreview(file ? URL.createObjectURL(file) : imageInput?.value.trim());
+}
+
+async function handleBoardHeroSave(event) {
+  event.preventDefault();
+  const imageInput = document.getElementById("boardHeroImageInput");
+  const fileInput = document.getElementById("boardHeroImageFileInput");
+  const storageInfo = document.getElementById("boardHeroStorageInfo");
+  const submitButton = event.currentTarget.querySelector('[type="submit"]');
+  const file = fileInput?.files?.[0] || null;
+  const imageValue = imageInput?.value.trim() || "";
+
+  if (!file && !imageValue) {
+    alert("이미지 URL을 입력하거나 파일을 업로드해주세요.");
+    return;
+  }
+
+  try {
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = "saving...";
+    }
+
+    let finalUrl = imageValue;
+    if (file) {
+      const uploaded = await uploadHeroImageFileToStorage(file, "board-hero");
+      finalUrl = uploaded.publicUrl;
+      state.settings.boardHeroImageStoragePath = uploaded.storagePath;
+      if (storageInfo) storageInfo.textContent = `storage path: ${uploaded.storagePath}`;
+    } else {
+      state.settings.boardHeroImageStoragePath = "";
+      if (storageInfo) storageInfo.textContent = "";
+    }
+
+    await saveBoardHeroSettings({ imageUrl: finalUrl });
+    imageInput.value = finalUrl;
+    if (fileInput) fileInput.value = "";
+    updateBoardHeroPreview(finalUrl);
+    showGlobalSuccess("게시판 상단 이미지가 저장되었습니다.");
+  } catch (error) {
+    console.error(error);
+    alert(error?.message || "게시판 상단 이미지 저장 중 오류가 발생했습니다.");
+  } finally {
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.textContent = "save board hero";
+    }
+  }
 }
 
 function injectAdminPostViewer() {
@@ -674,19 +752,19 @@ function getHeroFileExtension(filename = "") {
   return sanitized.slice(lastDotIndex + 1).toLowerCase();
 }
 
-function createHeroImageStoragePath(file) {
+function createHeroImageStoragePath(file, directory = "hero") {
   const extension = getHeroFileExtension(file?.name || "") || "jpg";
   const year = new Date().getFullYear();
   const month = String(new Date().getMonth() + 1).padStart(2, "0");
-  return `hero/${year}/${month}/${crypto.randomUUID()}.${extension}`;
+  return `${directory}/${year}/${month}/${crypto.randomUUID()}.${extension}`;
 }
 
-async function uploadHeroImageFileToStorage(file) {
+async function uploadHeroImageFileToStorage(file, directory = "hero") {
   if (!(file instanceof File)) {
     throw new Error("업로드할 히어로 이미지를 찾을 수 없습니다.");
   }
 
-  const storagePath = createHeroImageStoragePath(file);
+  const storagePath = createHeroImageStoragePath(file, directory);
   const { error } = await supabaseClient.storage.from(CONFIG.imageBucket).upload(storagePath, file, {
     upsert: false,
     contentType: file.type || "image/jpeg"

@@ -1,6 +1,8 @@
 const BOARD_PAGE_SIZE = 6;
 const DEFAULT_HERO_IMAGE =
   "https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=1800&q=80";
+const DEFAULT_BOARD_HERO_IMAGE =
+  "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1800&q=80";
 const DEFAULT_HERO_LOGO_TEXT = "복음을 전하고, 삶을 나누는 선교 편지";
 const DEFAULT_HERO_LOGO_SIZE = 100;
 const DEFAULT_HERO_LOGO_POSITION = "center-center";
@@ -40,6 +42,8 @@ const state = {
   settings: {
     heroImageUrl: DEFAULT_HERO_IMAGE,
     heroImageStoragePath: "",
+    boardHeroImageUrl: DEFAULT_BOARD_HERO_IMAGE,
+    boardHeroImageStoragePath: "",
     heroLogoText: DEFAULT_HERO_LOGO_TEXT,
     heroLogoSize: DEFAULT_HERO_LOGO_SIZE,
     heroLogoPosition: DEFAULT_HERO_LOGO_POSITION
@@ -522,6 +526,7 @@ function initializeBoardPage() {
   state.boardPage = 1;
   state.boardMode = "list";
   applyStaticPageHeaderContrast();
+  applyBoardHeroImage();
   bindBoardEvents();
   renderBoardList();
   updateBoardAdminVisibility();
@@ -535,6 +540,7 @@ function initializeAdminPage() {
   injectAdminPostViewer();
   bindAdminEvents();
   renderHeroAdmin();
+  renderBoardHeroAdmin();
   renderAdminDashboard();
 }
 
@@ -556,6 +562,16 @@ function getSelectedLetter() {
 
 function getCurrentHeroImage() {
   return state.settings.heroImageUrl || DEFAULT_HERO_IMAGE;
+}
+
+function getCurrentBoardHeroImage() {
+  return state.settings.boardHeroImageUrl || DEFAULT_BOARD_HERO_IMAGE;
+}
+
+function applyBoardHeroImage() {
+  const boardHeroImage = document.getElementById("boardHeroImage");
+  if (!boardHeroImage) return;
+  boardHeroImage.src = getCurrentBoardHeroImage();
 }
 
 function getCurrentHeroLogoText() {

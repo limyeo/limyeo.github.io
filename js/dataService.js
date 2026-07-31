@@ -83,7 +83,7 @@ async function loadSiteSettings() {
   const { data, error } = await supabaseClient
     .from("site_settings")
     .select("key, value_text, value_json")
-    .in("key", ["hero_image", "hero_logo_text", "hero_logo_style"]);
+    .in("key", ["hero_image", "hero_logo_text", "hero_logo_style", "board_hero_image"]);
 
   if (error) throw error;
 
@@ -91,10 +91,12 @@ async function loadSiteSettings() {
   const heroImageRow = rows.find((row) => row.key === "hero_image");
   const heroTextRow = rows.find((row) => row.key === "hero_logo_text");
   const heroStyleRow = rows.find((row) => row.key === "hero_logo_style");
+  const boardHeroImageRow = rows.find((row) => row.key === "board_hero_image");
 
   const heroImageJson = heroImageRow?.value_json || {};
   const heroTextJson = heroTextRow?.value_json || {};
   const heroStyleJson = heroStyleRow?.value_json || {};
+  const boardHeroImageJson = boardHeroImageRow?.value_json || {};
 
   state.settings.heroImageUrl =
     heroImageRow?.value_text || heroImageJson.url || DEFAULT_HERO_IMAGE;
@@ -104,6 +106,9 @@ async function loadSiteSettings() {
     heroStyleJson.size_percent ?? heroStyleRow?.value_text
   );
   state.settings.heroLogoPosition = resolveHeroLogoPosition(heroStyleJson.position);
+  state.settings.boardHeroImageUrl =
+    boardHeroImageRow?.value_text || boardHeroImageJson.url || DEFAULT_BOARD_HERO_IMAGE;
+  state.settings.boardHeroImageStoragePath = boardHeroImageJson.storage_path || "";
   cacheHeroSettings();
 }
 
@@ -206,6 +211,24 @@ async function saveHeroSettings({ imageUrl, logoText, logoSize, logoPosition }) 
   state.settings.heroLogoSize = resolvedLogoSize;
   state.settings.heroLogoPosition = resolvedLogoPosition;
   cacheHeroSettings();
+}
+
+async function saveBoardHeroSettings({ imageUrl }) {
+  const resolvedImageUrl = imageUrl || DEFAULT_BOARD_HERO_IMAGE;
+  const { error } = await supabaseClient.from("site_settings").upsert(
+    {
+      key: "board_hero_image",
+      value_text: resolvedImageUrl,
+      value_json: {
+        url: resolvedImageUrl,
+        storage_path: state.settings.boardHeroImageStoragePath || ""
+      }
+    },
+    { onConflict: "key" }
+  );
+
+  if (error) throw error;
+  state.settings.boardHeroImageUrl = resolvedImageUrl;
 }
 
 async function createPostInSupabase(payload) {

@@ -106,6 +106,12 @@
   --hero-logo-scale: 1;
 }
 
+.hero-preview-card__content--board {
+  align-items: flex-start;
+  justify-content: flex-end;
+  text-align: left;
+}
+
 .hero-section__content {
   position: absolute;
   inset: 0;
@@ -381,6 +387,15 @@
 }
 
 @media (max-width: 640px) {
+  .hero-section__media {
+    background: #111111;
+  }
+
+  .hero-section__image {
+    object-fit: contain;
+    transform: none;
+  }
+
   .scroll-indicator {
     width: 52px;
     height: 52px;

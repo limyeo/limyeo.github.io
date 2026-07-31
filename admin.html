@@ -161,6 +161,43 @@
                 </div>
               </div>
             </section>
+
+            <section class="admin-card admin-card--wide">
+              <div class="admin-card__head">
+                <p class="section-label">board hero image</p>
+                <h2 class="admin-card__title">게시판 상단 이미지 관리</h2>
+                <p class="admin-helper-text">게시판 상단에 표시할 외부 이미지 URL을 입력하거나 이미지 파일을 업로드할 수 있습니다.</p>
+              </div>
+
+              <form id="boardHeroForm" class="admin-form">
+                <label class="admin-field">
+                  <span class="admin-field__label">이미지 URL</span>
+                  <input id="boardHeroImageInput" class="admin-input" type="url" placeholder="https://..." />
+                </label>
+
+                <label class="admin-field">
+                  <span class="admin-field__label">또는 이미지 파일 업로드</span>
+                  <input id="boardHeroImageFileInput" class="admin-input" type="file" accept="image/*" />
+                </label>
+
+                <p id="boardHeroStorageInfo" class="admin-helper-text"></p>
+
+                <div class="admin-actions">
+                  <button type="submit" class="solid-button">save board hero</button>
+                </div>
+              </form>
+
+              <div class="admin-preview hero-preview-card hero-preview-card--board">
+                <div class="hero-preview-card__media">
+                  <img id="boardHeroPreview" src="" alt="게시판 상단 이미지 미리보기" />
+                </div>
+                <div class="hero-preview-card__overlay" aria-hidden="true"></div>
+                <div class="hero-preview-card__content hero-preview-card__content--board">
+                  <p class="hero-preview-card__eyebrow">mission board</p>
+                  <p class="hero-preview-card__text">선교 편지</p>
+                </div>
+              </div>
+            </section>
           </div>
         </section>
       </div>
