@@ -2,11 +2,6 @@
   position: relative;
   --scroll-indicator-bottom-factor: 0.62;
   --scroll-indicator-bottom-min-gap: 14px;
-  line-height: 1;
-}
-
-.home-page * {
-  line-height: 1;  
 }
 
 .hero-section {
@@ -152,7 +147,7 @@
     calc(82px * var(--hero-logo-scale))
   );
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1;
   letter-spacing: -0.055em;
   text-shadow:
     0 10px 28px rgba(0, 0, 0, 0.20),
@@ -428,7 +423,7 @@
       calc(10vw * var(--hero-logo-scale)),
       calc(50px * var(--hero-logo-scale))
     );
-    line-height: 1.4;
+    line-height: 1;
   }
 
   .hero-position-picker {
