@@ -107,8 +107,12 @@ async function loadSiteSettings() {
   );
   state.settings.heroLogoPosition = resolveHeroLogoPosition(heroStyleJson.position);
   state.settings.boardHeroImageUrl =
-    boardHeroImageRow?.value_text || boardHeroImageJson.url || DEFAULT_BOARD_HERO_IMAGE;
-  state.settings.boardHeroImageStoragePath = boardHeroImageJson.storage_path || "";
+    heroImageJson.board_hero_url ||
+    boardHeroImageRow?.value_text ||
+    boardHeroImageJson.url ||
+    DEFAULT_BOARD_HERO_IMAGE;
+  state.settings.boardHeroImageStoragePath =
+    heroImageJson.board_hero_storage_path || boardHeroImageJson.storage_path || "";
   cacheHeroSettings();
 }
 
@@ -180,7 +184,9 @@ async function saveHeroSettings({ imageUrl, logoText, logoSize, logoPosition }) 
       value_text: resolvedImageUrl,
       value_json: {
         url: resolvedImageUrl,
-        storage_path: state.settings.heroImageStoragePath || ""
+        storage_path: state.settings.heroImageStoragePath || "",
+        board_hero_url: getCurrentBoardHeroImage(),
+        board_hero_storage_path: state.settings.boardHeroImageStoragePath || ""
       }
     },
     {
@@ -215,13 +221,19 @@ async function saveHeroSettings({ imageUrl, logoText, logoSize, logoPosition }) 
 
 async function saveBoardHeroSettings({ imageUrl }) {
   const resolvedImageUrl = imageUrl || DEFAULT_BOARD_HERO_IMAGE;
+  // `site_settings.key` on existing deployments only allows the original
+  // setting keys. Keep the board hero alongside the home hero in the already
+  // supported `hero_image` JSON document instead of trying to insert a new
+  // `board_hero_image` key (which is rejected by those databases).
   const { error } = await supabaseClient.from("site_settings").upsert(
     {
-      key: "board_hero_image",
-      value_text: resolvedImageUrl,
+      key: "hero_image",
+      value_text: getCurrentHeroImage(),
       value_json: {
-        url: resolvedImageUrl,
-        storage_path: state.settings.boardHeroImageStoragePath || ""
+        url: getCurrentHeroImage(),
+        storage_path: state.settings.heroImageStoragePath || "",
+        board_hero_url: resolvedImageUrl,
+        board_hero_storage_path: state.settings.boardHeroImageStoragePath || ""
       }
     },
     { onConflict: "key" }

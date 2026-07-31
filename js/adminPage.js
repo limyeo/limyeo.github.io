@@ -83,7 +83,9 @@ async function handleBoardHeroSave(event) {
 
     let finalUrl = imageValue;
     if (file) {
-      const uploaded = await uploadHeroImageFileToStorage(file, "board-hero");
+      // Use the established hero path so this also works with storage policies
+      // that were created before the board-specific setting was introduced.
+      const uploaded = await uploadHeroImageFileToStorage(file, "hero");
       finalUrl = uploaded.publicUrl;
       state.settings.boardHeroImageStoragePath = uploaded.storagePath;
       if (storageInfo) storageInfo.textContent = `storage path: ${uploaded.storagePath}`;
