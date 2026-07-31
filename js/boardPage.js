@@ -20,10 +20,64 @@ function bindBoardEvents() {
     closeImageBlockTypeMenu();
   });
   document.getElementById("blockList")?.addEventListener("click", handleBlockListClick);
+  document.getElementById("boardDetailBody")?.addEventListener("click", handleBoardDetailImageClick);
+  document.getElementById("boardImageModal")?.addEventListener("click", handleBoardImageModalClick);
+  document.getElementById("boardImageModalCloseButton")?.addEventListener("click", closeBoardImageModal);
 
   document.addEventListener("click", handleImageBlockMenuOutsideClick);
+  document.addEventListener("keydown", handleBoardImageModalKeydown);
   bindPostMusicFieldEvents?.();
   prepareBoardInlineMusicPlayer();
+}
+
+let boardImageModalTrigger = null;
+
+function handleBoardDetailImageClick(event) {
+  const image = event.target.closest(".recent-letter__image");
+  if (!image || !event.currentTarget.contains(image)) return;
+
+  openBoardImageModal(image);
+}
+
+function openBoardImageModal(image) {
+  const modal = document.getElementById("boardImageModal");
+  const modalImage = document.getElementById("boardImageModalImage");
+  const closeButton = document.getElementById("boardImageModalCloseButton");
+  if (!modal || !modalImage || !image?.src) return;
+
+  boardImageModalTrigger = image;
+  modalImage.src = image.currentSrc || image.src;
+  modalImage.alt = image.alt || "게시물 사진";
+  modal.classList.remove("is-hidden");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("is-board-image-modal-open");
+  closeButton?.focus();
+}
+
+function closeBoardImageModal() {
+  const modal = document.getElementById("boardImageModal");
+  const modalImage = document.getElementById("boardImageModalImage");
+  if (!modal || modal.classList.contains("is-hidden")) return;
+
+  modal.classList.add("is-hidden");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("is-board-image-modal-open");
+  if (modalImage) modalImage.removeAttribute("src");
+
+  boardImageModalTrigger?.focus({ preventScroll: true });
+  boardImageModalTrigger = null;
+}
+
+function handleBoardImageModalClick(event) {
+  if (event.target === event.currentTarget) closeBoardImageModal();
+}
+
+function handleBoardImageModalKeydown(event) {
+  const modal = document.getElementById("boardImageModal");
+  if (event.key !== "Escape" || modal?.classList.contains("is-hidden")) return;
+
+  event.preventDefault();
+  closeBoardImageModal();
 }
 
 function setBoardLoading(isLoading, message = "처리 중입니다...") {
@@ -273,6 +327,16 @@ async function openBoardDetail(letter, options = {}) {
   title.textContent = letter.title;
   date.textContent = formatDateTime(letter.createdAt);
   body.innerHTML = (letter.blocks || []).map((block) => renderRecentBlock(block, letter.title)).join("");
+  body.querySelectorAll(".recent-letter__image").forEach((image) => {
+    image.tabIndex = 0;
+    image.setAttribute("role", "button");
+    image.setAttribute("aria-label", `${image.alt || "게시물 사진"} 크게 보기`);
+    image.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      openBoardImageModal(image);
+    });
+  });
 
   const preserveMusic = shouldPreserveBoardDetailMusic(letter, options);
 

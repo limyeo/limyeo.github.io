@@ -189,6 +189,27 @@
 
   <button id="boardCreateButton" type="button" class="solid-button board-floating-create is-hidden">등록</button>
 
+    <div
+    id="boardImageModal"
+    class="board-image-modal is-hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-label="사진 크게 보기"
+    aria-hidden="true"
+  >
+    <button
+      id="boardImageModalCloseButton"
+      type="button"
+      class="board-image-modal__close"
+      aria-label="사진 크게 보기 닫기"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="board-image-modal__content">
+      <img id="boardImageModalImage" class="board-image-modal__image" alt="" />
+    </div>
+  </div>
+
   <div id="boardLoadingOverlay" class="board-loading-overlay is-hidden" role="status" aria-live="polite" aria-hidden="true">
     <div class="board-loading-overlay__panel">
       <span class="board-loading-overlay__spinner" aria-hidden="true"></span>
