@@ -68,8 +68,9 @@
 }
 
 .recent-letter__text-inner {
-  width: 100%;
-  text-align: center;
+  width: min(100%, 72ch);
+  margin-inline: auto;
+  text-align: left;
   color: #202020;
   font-size: 18px;
   line-height: 2;
@@ -333,6 +334,7 @@
   }
 
   .recent-letter__text-inner {
+    width: min(100%, 68ch);
     font-size: 17px;
   }
 }
@@ -403,6 +405,7 @@
   }
 
   .recent-letter__text-inner {
+    width: 100%;
     font-size: 16px;
     line-height: 1.9;
   }
